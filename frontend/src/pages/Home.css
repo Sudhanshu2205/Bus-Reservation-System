@@ -1,0 +1,105 @@
+/* Container */
+.home-container {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Hero section */
+.home-hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.home-hero h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #2d3748;
+}
+.home-hero p {
+  font-size: 1rem;
+  color: #4a5568;
+}
+
+/* Loading & empty states */
+.loading,
+.no-data {
+  text-align: center;
+  font-size: 1rem;
+  color: #718096;
+  margin-top: 2rem;
+}
+
+/* Grid */
+.buses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Card */
+.bus-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.bus-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.bus-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+}
+.bus-route {
+  font-weight: 600;
+  color: #2d3748;
+}
+.bus-date {
+  font-size: 0.875rem;
+  color: #718096;
+}
+
+/* Info row */
+.bus-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin-bottom: 1.25rem;
+}
+
+/* Book button */
+.btn-book {
+  display: block;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(90deg, #9f7aea, #6b46c1);
+  color: #fff;
+  font-weight: 500;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-book:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .home-hero h1 {
+    font-size: 1.75rem;
+  }
+  .buses-grid {
+    grid-template-columns: 1fr;
+  }
+}

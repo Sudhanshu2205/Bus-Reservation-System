@@ -1,0 +1,111 @@
+/* Root wrapper to allow full-height background if needed */
+.layout-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #fafafa;
+}
+
+/* Header */
+.site-header {
+  background: linear-gradient(90deg, #9f7aea, #6b46c1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.logo a {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+.logo a:hover {
+  opacity: 0.9;
+}
+
+/* Navigation links */
+.main-nav,
+.auth-nav {
+  display: flex;
+  align-items: center;
+}
+.main-nav .nav-link,
+.auth-nav .nav-link {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  position: relative;
+  transition: color 0.2s;
+}
+.main-nav .nav-link:hover,
+.auth-nav .nav-link:hover {
+  color: #fff;
+}
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+/* Logout button */
+.btn-logout {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+  color: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-logout:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+.btn-logout:active {
+  transform: scale(0.97);
+}
+
+/* Main content area */
+.content-container {
+  flex: 1;
+  max-width: 1024px;
+  width: 100%;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .main-nav,
+  .auth-nav {
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .main-nav .nav-link,
+  .auth-nav .nav-link {
+    margin: 0.25rem 0.5rem;
+  }
+}

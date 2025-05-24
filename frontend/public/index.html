@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="description" content="Book bus tickets online with ease. Find routes, compare prices, and secure your seats instantly with our reliable bus booking platform." />
+  <meta name="keywords" content="bus booking, online bus tickets, travel booking, bus reservation, intercity travel, coach booking" />
+  <meta name="author" content="Bus Booking Platform" />
+  <meta name="robots" content="index, follow" />
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Online Bus Ticket Booking - Easy & Reliable" />
+  <meta property="og:description" content="Book bus tickets online with ease. Find routes, compare prices, and secure your seats instantly." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourdomain.com" />
+  <meta property="og:image" content="https://yourdomain.com/og-image.jpg" />
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Online Bus Ticket Booking" />
+  <meta name="twitter:description" content="Book bus tickets online with ease. Find routes, compare prices, and secure your seats instantly." />
+  <meta name="twitter:image" content="https://yourdomain.com/twitter-image.jpg" />
+  
+  <!-- Theme Colors -->
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="msapplication-TileColor" content="#2563eb" />
+  <meta name="msapplication-navbutton-color" content="#2563eb" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  
+  <!-- PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Bus Booking" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="application-name" content="Bus Booking" />
+  
+  <!-- Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <!-- Load fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Bus Booking Platform",
+    "description": "Online bus ticket booking system for easy travel reservations",
+    "url": "https://yourdomain.com",
+    "applicationCategory": "TravelApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "category": "Transportation"
+    }
+  }
+  </script>
+  
+  <title>Bus Booking - Easy Online Bus Reservations | Book Your Journey</title>
+  
+  <!-- Preload critical resources -->
+  <link rel="preload" href="/src/index.css" as="style" />
+  
+  <!-- Critical CSS can be inlined here for better performance -->
+  <style>
+    /* Critical above-the-fold styles */
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #f8fafc;
+    }
+    
+    #root {
+      min-height: 100vh;
+    }
+    
+    /* Loading spinner */
+    .loading-spinner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e5e7eb;
+      border-top: 4px solid #2563eb;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      z-index: 9999;
+    }
+    
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    
+    .loading-text {
+      position: fixed;
+      top: 60%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #6b7280;
+      font-size: 14px;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <noscript>
+    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+      <h2>JavaScript Required</h2>
+      <p>This bus booking application requires JavaScript to function properly.</p>
+      <p>Please enable JavaScript in your browser settings and refresh the page.</p>
+    </div>
+  </noscript>
+  
+  <!-- Loading indicator -->
+  <div id="loading-indicator">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading Bus Booking...</div>
+  </div>
+  
+  <div id="root"></div>
+  
+  <!-- Hide loading indicator once React loads -->
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      // Remove loading indicator after a short delay
+      setTimeout(function() {
+        const loadingEl = document.getElementById('loading-indicator');
+        if (loadingEl) {
+          loadingEl.style.display = 'none';
+        }
+      }, 1000);
+    });
+  </script>
+  
+  <!-- React scripts will be automatically injected here by the build process -->
+</body>
+</html>

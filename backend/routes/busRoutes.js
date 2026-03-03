@@ -11,7 +11,9 @@ const {
 const auth = require('../middleware/auth');
 
 // make list public:
-routerBus.get('/public', getBuses); // public bus list
+routerBus.get('/', getBuses); 
+ // Publicly accessible bus list
+ // public bus list
 
 // still protect add/update/delete:
 routerBus.post('/',     auth,   addBus);

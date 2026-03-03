@@ -3,15 +3,14 @@ import api from '../api';
 import { Link } from 'react-router-dom';
 import './Home.css';
 
-
 export default function Home() {
   const [buses, setBuses] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/busRoutes')
+    api.get('/buses')
       .then(res => setBuses(res.data))
-      .catch(err => console.error(err))
+      .catch(err => console.error('Failed to fetch buses:', err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -23,7 +22,7 @@ export default function Home() {
       </div>
 
       {loading ? (
-        <p className="loading">Loading buses…</p>
+        <p className="loading">Loading buses...</p>
       ) : buses.length === 0 ? (
         <p className="no-data">No buses found.</p>
       ) : (
@@ -32,17 +31,17 @@ export default function Home() {
             <div key={bus._id} className="bus-card">
               <div className="bus-header">
                 <span className="bus-route">
-                  {bus.from} → {bus.to}
+                  {bus.from} -&gt; {bus.to}
                 </span>
                 <span className="bus-date">
                   {new Date(bus.date).toLocaleDateString()}
                 </span>
               </div>
               <div className="bus-info">
-                <span>Bus #: {bus.busNumber || '—'}</span>
-                <span>
-                  Seats Left: {bus.availableSeats}/{bus.seats}
-                </span>
+                <span>Bus #: {bus.busNumber || '-'}</span>
+                <span>Type: {bus.busType || 'N/A'}</span>
+                <span>Fare: INR {bus.price ?? 'N/A'}</span>
+                <span>Seats Left: {bus.availableSeats}/{bus.seats}</span>
               </div>
               <Link to="/booking" state={{ bus }} className="btn-book">
                 Book Now

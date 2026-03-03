@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
-import './Login.css';         // <-- if you split the CSS out
+import './Login.css';
 
 export default function Login() {
   const [email, setEmail]       = useState('');
@@ -18,11 +18,11 @@ export default function Login() {
     setError('');
     setLoading(true);
     try {
-      const res = await api.post('/auth/login', { email, password });
-      login(res.data.token, res.data.user);
+      const res = await api.post('/auth/login', { email, password }); // ✅ Correct API
+      login(res.data.token, res.data.user);                            // ✅ Store user
       navigate('/');
     } catch (err) {
-      setError(err.response?.data.msg || 'Login failed. Please try again.');
+      setError(err.response?.data?.msg || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }
@@ -48,17 +48,17 @@ export default function Login() {
           <div className="hill hill2" />
         </div>
         <div className="illustration-text">
-          <h3>Login your Account to get full Experience</h3>
-          <p>Try Qubicle your Account to get more Premium features</p>
+          <h3>Login your account to get full experience</h3>
+          <p>Try Qubicle to unlock premium features</p>
         </div>
       </div>
 
       {/* Right form panel */}
       <div className="form-panel">
         <div className="form-card">
-          <h2>Hello!</h2>
+          <h2>Welcome Back!</h2>
           <h3>Good Morning</h3>
-          <p className="subtitle">Login your account</p>
+          <p className="subtitle">Login to your account</p>
 
           <form onSubmit={handleSubmit}>
             {error && <div className="error-box">{error}</div>}
@@ -70,6 +70,7 @@ export default function Login() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
+                autoComplete="email"
               />
             </div>
 
@@ -80,18 +81,21 @@ export default function Login() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
+                autoComplete="current-password"
               />
               <button
                 type="button"
                 className="toggle-pw"
-                onClick={() => setShow(s => !s)}
+                onClick={() => setShow(prev => !prev)}
+                aria-label="Toggle password visibility"
               >
                 {showPassword ? '🙈' : '👁️'}
               </button>
             </div>
 
             <div className="label-right">
-              <button type="button" className="link-btn">
+              {/* Optional: implement this or remove */}
+              <button type="button" className="link-btn" disabled>
                 Forgot password?
               </button>
             </div>
@@ -109,5 +113,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-);
+  );
 }

@@ -5,13 +5,17 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [isAuthReady, setIsAuthReady] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       api.get('/auth/me')
         .then(res => setUser(res.data.user))
-        .catch(() => localStorage.removeItem('token'));
+        .catch(() => localStorage.removeItem('token'))
+        .finally(() => setIsAuthReady(true));
+    } else {
+      setIsAuthReady(true);
     }
   }, []);
 
@@ -26,7 +30,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthReady }}>
       {children}
     </AuthContext.Provider>
   );

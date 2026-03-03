@@ -7,6 +7,9 @@ export default function AddBus() {
   const [from, setFrom]               = useState('');
   const [to, setTo]                   = useState('');
   const [date, setDate]               = useState('');
+  const [departureTime, setDepartureTime] = useState('');
+  const [arrivalTime, setArrivalTime] = useState('');
+  const [price, setPrice]             = useState('');
   const [seats, setSeats]             = useState('');
   const [error, setError]             = useState('');
   const [loading, setLoading]         = useState(false);
@@ -23,6 +26,9 @@ export default function AddBus() {
         from,
         to,
         date,
+        departureTime,
+        arrivalTime,
+        price: Number(price),
         seats: Number(seats),
         availableSeats: Number(seats),
       });
@@ -69,6 +75,32 @@ export default function AddBus() {
             type="date"
             value={date}
             onChange={e => setDate(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Departure Time
+          <input
+            type="time"
+            value={departureTime}
+            onChange={e => setDepartureTime(e.target.value)}
+          />
+        </label>
+        <label>
+          Arrival Time
+          <input
+            type="time"
+            value={arrivalTime}
+            onChange={e => setArrivalTime(e.target.value)}
+          />
+        </label>
+        <label>
+          Price (INR)
+          <input
+            type="number"
+            min="1"
+            value={price}
+            onChange={e => setPrice(e.target.value)}
             required
           />
         </label>

@@ -1,38 +1,123 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
-const Bus = require('backend\models\Bus'); // adjust path to your Bus model
+const bcrypt = require('bcryptjs');
+const connectDB = require('../config/db');
+const Bus = require('../models/Bus');
+const User = require('../models/User');
+const Booking = require('../models/Booking');
 
-const mongoURI = 'mongodb+srv://1rn22is153sudhanshukumar:1rn22is153@cluster0.bcucgxv.mongodb.net/busbooking?retryWrites=true&w=majority'; // e.g., mongodb+srv://...
+const cities = ['Delhi', 'Mumbai', 'Pune', 'Bengaluru', 'Hyderabad', 'Chennai', 'Jaipur', 'Surat'];
+const operators = ['RedLine Travels', 'InterCity Express', 'GoBus', 'BlueRoute', 'CityConnect'];
+const amenitiesPool = ['WiFi', 'Charging Port', 'Water Bottle', 'Blanket', 'GPS Tracking'];
+const busTypes = ['AC Sleeper', 'AC Seater', 'Non-AC Sleeper', 'Non-AC Seater', 'Volvo'];
 
-const seedBuses = async () => {
-  await mongoose.connect(mongoURI);
-  await Bus.deleteMany(); // Optional: clear existing data
+function pad(n) {
+  return String(n).padStart(2, '0');
+}
 
-  const cities = ['New York', 'Boston', 'Chicago', 'San Francisco', 'Los Angeles', 'Seattle', 'Houston', 'Miami', 'Denver', 'Atlanta'];
+function randomTime(minHour = 5, maxHour = 22) {
+  const hour = Math.floor(Math.random() * (maxHour - minHour + 1)) + minHour;
+  const mins = [0, 15, 30, 45][Math.floor(Math.random() * 4)];
+  return `${pad(hour)}:${pad(mins)}`;
+}
+
+function randomDateWithinDays(days = 15) {
+  const d = new Date();
+  d.setDate(d.getDate() + Math.floor(Math.random() * days));
+  return d.toISOString().split('T')[0];
+}
+
+function pickDifferentCity(from) {
+  let to = from;
+  while (to === from) {
+    to = cities[Math.floor(Math.random() * cities.length)];
+  }
+  return to;
+}
+
+async function seed() {
+  await connectDB();
+
+  await Promise.all([
+    Booking.deleteMany({}),
+    Bus.deleteMany({}),
+    User.deleteMany({})
+  ]);
+
+  const [adminHash, userHash] = await Promise.all([
+    bcrypt.hash('Admin@123', 10),
+    bcrypt.hash('User@123', 10)
+  ]);
+
+  const [adminUser, demoUser] = await User.create([
+    {
+      name: 'Admin User',
+      email: 'admin@busbooker.com',
+      password: adminHash,
+      role: 'admin'
+    },
+    {
+      name: 'Demo User',
+      email: 'user@busbooker.com',
+      password: userHash,
+      role: 'user'
+    }
+  ]);
+
   const buses = [];
-
-  for (let i = 1; i <= 50; i++) {
+  for (let i = 1; i <= 40; i += 1) {
     const from = cities[Math.floor(Math.random() * cities.length)];
-    let to;
-    do {
-      to = cities[Math.floor(Math.random() * cities.length)];
-    } while (to === from);
-
+    const to = pickDifferentCity(from);
+    const busType = busTypes[Math.floor(Math.random() * busTypes.length)];
+    const seats = busType.includes('Sleeper') ? 36 : 44;
+    const booked = Math.floor(Math.random() * 14);
     buses.push({
-      name: `Bus ${i}`,
+      busNumber: `BUS-${1000 + i}`,
+      operatorName: operators[Math.floor(Math.random() * operators.length)],
       from,
       to,
-      date: new Date(Date.now() + Math.floor(Math.random() * 10) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      departure: `${Math.floor(Math.random() * 18 + 5)}:${['00', '15', '30', '45'][Math.floor(Math.random() * 4)]}`,
-      arrival: `${Math.floor(Math.random() * 18 + 5)}:${['00', '15', '30', '45'][Math.floor(Math.random() * 4)]}`,
-      seats: 40,
-      availableSeats: Math.floor(Math.random() * 35 + 5),
-      price: Math.floor(Math.random() * 90 + 10),
+      date: randomDateWithinDays(20),
+      departureTime: randomTime(5, 20),
+      arrivalTime: randomTime(7, 23),
+      busType,
+      amenities: amenitiesPool.sort(() => 0.5 - Math.random()).slice(0, 3),
+      price: Math.floor(Math.random() * 2200) + 350,
+      seats,
+      availableSeats: seats - booked
     });
   }
 
-  await Bus.insertMany(buses);
-  console.log('50 buses inserted!');
-  process.exit();
-};
+  const createdBuses = await Bus.insertMany(buses);
 
-seedBuses();
+  const sampleBookings = createdBuses.slice(0, 3).map((bus, idx) => {
+    const seatsBooked = idx + 1;
+    return {
+      user: demoUser._id,
+      bus: bus._id,
+      seatsBooked,
+      totalFare: seatsBooked * bus.price,
+      status: 'confirmed'
+    };
+  });
+
+  await Booking.insertMany(sampleBookings);
+
+  console.log('Seed completed');
+  console.log(`Users created: ${adminUser.email}, ${demoUser.email}`);
+  console.log(`Buses created: ${createdBuses.length}`);
+  console.log('Demo passwords: Admin@123, User@123');
+
+  await mongoose.connection.close();
+}
+
+seed()
+  .then(() => process.exit(0))
+  .catch(async err => {
+    console.error('Seed failed:', err.message);
+    try {
+      await mongoose.connection.close();
+    } catch (_err) {
+      // ignore
+    }
+    process.exit(1);
+  });

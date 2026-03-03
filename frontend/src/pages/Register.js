@@ -3,21 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import './Register.css';
 
-export default function Register() 
-{
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+export default function Register() {
+  const [name, setName]       = useState('');
+  const [email, setEmail]     = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [error, setError]     = useState('');
+  const navigate              = useNavigate();
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setError('');
     try {
-      await api.post('/auth/register', { name, email, password });
+      await api.post('/auth/register', { name, email, password }); // ✅ Correct
       alert('Registration successful! Please login.');
       navigate('/login');
     } catch (err) {
-      alert(err.response?.data.msg || 'Registration failed');
+      setError(err.response?.data?.msg || 'Registration failed. Try again.');
     }
   };
 
@@ -35,7 +36,7 @@ export default function Register()
               <span className="logo-text">Diprella</span>
             </div>
           </div>
-          
+
           <div className="welcome-content">
             <h1 className="welcome-title">Welcome Back!</h1>
             <p className="welcome-subtitle">
@@ -46,6 +47,7 @@ export default function Register()
               type="button" 
               className="sign-in-btn"
               onClick={handleSignInClick}
+              aria-label="Navigate to login"
             >
               SIGN IN
             </button>
@@ -56,15 +58,15 @@ export default function Register()
         <div className="form-panel">
           <div className="form-content">
             <h2 className="form-title">Create Account</h2>
-            
+
             <div className="social-buttons">
-              <button type="button" className="social-btn facebook">
+              <button type="button" className="social-btn facebook" aria-label="Facebook">
                 <span>f</span>
               </button>
-              <button type="button" className="social-btn google">
+              <button type="button" className="social-btn google" aria-label="Google">
                 <span>G+</span>
               </button>
-              <button type="button" className="social-btn linkedin">
+              <button type="button" className="social-btn linkedin" aria-label="LinkedIn">
                 <span>in</span>
               </button>
             </div>
@@ -72,6 +74,8 @@ export default function Register()
             <p className="form-subtitle">or use your email for registration:</p>
 
             <form onSubmit={handleSubmit} className="register-form">
+              {error && <div className="error-box">{error}</div>}
+
               <div className="input-group">
                 <input
                   type="text"
@@ -80,6 +84,7 @@ export default function Register()
                   className="form-input"
                   value={name}
                   onChange={e => setName(e.target.value)}
+                  autoComplete="name"
                 />
               </div>
 
@@ -91,6 +96,7 @@ export default function Register()
                   className="form-input"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
+                  autoComplete="email"
                 />
               </div>
 
@@ -102,6 +108,7 @@ export default function Register()
                   className="form-input"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
+                  autoComplete="new-password"
                 />
               </div>
 

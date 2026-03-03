@@ -8,7 +8,8 @@ import Booking from './pages/Booking';
 import NotFound from './pages/NotFound';
 
 function PrivateRoute({ children }) {
-  const { user } = useAuth();
+  const { user, isAuthReady } = useAuth();
+  if (!isAuthReady) return null;
   return user ? children : <Navigate to="/login" replace />;
 }
 
